@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GiftGivingState, selectHolidayListItems } from '../../reducers';
+import { GiftGivingState, selectHolidayListItems, selectHolidaysLoaded } from '../../reducers';
 import { Observable } from 'rxjs';
 import { HolidayListItem } from '../../models';
 import { Store } from '@ngrx/store';
@@ -12,10 +12,13 @@ import { Store } from '@ngrx/store';
 export class HolidaysComponent implements OnInit {
 
   holidays$: Observable<HolidayListItem[]>;
+  holidaysLoaded$: Observable<boolean>;
+
   constructor(private store: Store<GiftGivingState>) { }
 
   ngOnInit() {
     this.holidays$ = this.store.select(selectHolidayListItems);
+    this.holidaysLoaded$ = this.store.select(selectHolidaysLoaded);
   }
 
 }
