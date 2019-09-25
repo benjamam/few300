@@ -3,7 +3,7 @@ import * as fromHolidays from './holidays.reducer';
 import * as fromUiHints from './ui-hints.reducer';
 import * as fromFriends from './friend.reducer';
 import { createFeatureSelector, createSelector, ActionReducerMap } from '@ngrx/store';
-import { HolidayListItem } from '../models';
+import { HolidayListItem, FriendHoliday } from '../models';
 import { FriendListItem } from '../containers/friends/models';
 
 export interface GiftGivingState {
@@ -31,6 +31,13 @@ const selectHolidayArray = createSelector(selectHolidaysBranch, fromHolidays.sel
 export const selectShowAllHolidays = createSelector(selectUiHintsBranch, b => b.showAll);
 export const selectSortingHolidaysBy = createSelector(selectUiHintsBranch, b => b.sortHolidaysBy);
 export const selectFriendsArray = createSelector(selectFriendsBranch, fromFriends.selectFriendsArray);
+export const selectSelectedFriendId = createSelector(selectFriendsBranch, b => b.selectedFriend);
+export const selectFriendsEntities = createSelector(selectFriendsBranch, fromFriends.selectFriendEntities);
+
+export const selectSelectedFriend = createSelector(selectSelectedFriendId, selectFriendsEntities,
+  (id, entities) => entities[id]
+);
+
 // Then what your components need.
 
 
@@ -72,4 +79,18 @@ export const selectFriendListItems = createSelector(selectFriendsArray, friends 
     name: friend.name,
     isTemporary: friend.id.startsWith('T')
   } as FriendListItem))
+);
+
+// a selctor that returns the model of FriendHoliday
+export const selectFriendHolidayModel = createSelector(
+  selectSelectedFriend,
+  selectHolidayListItemsUnFiltered,
+  (friend, allHolidays) => {
+    return ({
+      id: friend.id,
+      name: friend.name,
+      nonCelebratedHolidays: allHolidays.map(h => ({ id: h.id, name: h.name })),
+      celebratedHolidays: []
+    } as FriendHoliday);
+  }
 );

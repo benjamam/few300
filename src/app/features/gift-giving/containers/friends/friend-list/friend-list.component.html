@@ -2,5 +2,8 @@
   <li class="alert alert-info"
       *ngFor='let friend of model'>
     {{ friend.name }}
+    <a style="margin-left: 15px;"
+       class="btn btn-sm btn-primary"
+       [routerLink]="['/gifts', 'friends', friend.id, 'holidays']">See Holidays</a>
   </li>
 </ul>
