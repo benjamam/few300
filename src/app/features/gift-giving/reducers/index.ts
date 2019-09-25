@@ -2,6 +2,7 @@ export const featureName = 'giftGiving';
 import * as fromHolidays from './holidays.reducer';
 import * as fromUiHints from './ui-hints.reducer';
 import * as fromFriends from './friend.reducer';
+import * as fromFriendHoliday from './friend-holiday.reducer';
 import { createFeatureSelector, createSelector, ActionReducerMap } from '@ngrx/store';
 import { HolidayListItem, FriendHoliday } from '../models';
 import { FriendListItem } from '../containers/friends/models';
@@ -10,12 +11,14 @@ export interface GiftGivingState {
   holidays: fromHolidays.HolidayState;
   uiHints: fromUiHints.UiHintsState;
   friends: fromFriends.FriendState;
+  friendHoliday: fromFriendHoliday.FriendHolidayState;
 }
 
 export const reducers: ActionReducerMap<GiftGivingState> = {
   holidays: fromHolidays.reducer,
   uiHints: fromUiHints.reducer,
-  friends: fromFriends.reducer
+  friends: fromFriends.reducer,
+  friendHoliday: fromFriendHoliday.reducer
 };
 
 
@@ -26,6 +29,7 @@ const selectFeature = createFeatureSelector<GiftGivingState>(featureName);
 const selectHolidaysBranch = createSelector(selectFeature, b => b.holidays);
 const selectUiHintsBranch = createSelector(selectFeature, b => b.uiHints);
 const selectFriendsBranch = createSelector(selectFeature, b => b.friends);
+const selectFriendHolidaysBranch = createSelector(selectFeature, b => b.friendHoliday);
 // 'Helpers'
 const selectHolidayArray = createSelector(selectHolidaysBranch, fromHolidays.selectHolidayArray);
 export const selectShowAllHolidays = createSelector(selectUiHintsBranch, b => b.showAll);
@@ -38,8 +42,16 @@ export const selectSelectedFriend = createSelector(selectSelectedFriendId, selec
   (id, entities) => entities[id]
 );
 
-// Then what your components need.
+export const selectFriendHolidayEntities =
+  createSelector(selectFriendHolidaysBranch, fromFriendHoliday.selectFriendHolidayEntities); // { '13': { id: .. }}
 
+export const selectFriendHolidayEntitiesForSelectedFriend = createSelector(selectSelectedFriendId, selectFriendHolidayEntities,
+  (id, friends) => friends[id] ? friends[id].holidaysCelebrated : null
+); // [...] || null
+
+
+
+// Then what your components need.
 
 export const selectHolidaysLoaded = createSelector(selectUiHintsBranch, b => b.holidaysLoaded);
 // - we need one that returns a HolidayListItem[] for our holidaylist component.
@@ -85,12 +97,20 @@ export const selectFriendListItems = createSelector(selectFriendsArray, friends 
 export const selectFriendHolidayModel = createSelector(
   selectSelectedFriend,
   selectHolidayListItemsUnFiltered,
-  (friend, allHolidays) => {
+  selectFriendHolidayEntitiesForSelectedFriend,
+  (friend, allHolidays, celebratedHolidays) => {
+    celebratedHolidays = celebratedHolidays || [];
+    const nonCelebrated = allHolidays
+      .filter(h => !celebratedHolidays.includes(h.id))
+      .map(h => ({ id: h.id, name: h.name }));
+    const celebrated = allHolidays
+      .filter(h => celebratedHolidays.includes(h.id))
+      .map(h => ({ id: h.id, name: h.name }));
     return ({
       id: friend.id,
       name: friend.name,
-      nonCelebratedHolidays: allHolidays.map(h => ({ id: h.id, name: h.name })),
-      celebratedHolidays: []
+      nonCelebratedHolidays: nonCelebrated,
+      celebratedHolidays: celebrated
     } as FriendHoliday);
   }
 );
