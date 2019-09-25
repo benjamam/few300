@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { pipe, of } from 'rxjs';
+import { pipe } from 'rxjs';
 import { tap, map, switchMap } from 'rxjs/operators';
 import * as appActions from '../../../actions/app.actions';
 import * as sortFilterActions from '../actions/sort-filter.actions';
-import * as holdayActions from '../actions/holidays.actions';
-
+import { loadHolidayData } from '../actions/holidays.actions';
 
 @Injectable()
 export class AppEffects {
@@ -20,7 +19,7 @@ export class AppEffects {
   onAppStartLoadHolidays$ = createEffect(() =>
     this.actions$.pipe(
       ofType(appActions.applicationStarted),
-      map(() => holdayActions.loadHolidayData())
+      map(() => loadHolidayData())
     ), { dispatch: true }
   );
 

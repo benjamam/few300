@@ -1,10 +1,9 @@
 import { createReducer, Action, on } from '@ngrx/store';
 import * as sortFilterActions from '../actions/sort-filter.actions';
 import * as fromHolidaysActions from '../actions/holidays.actions';
-
 export interface UiHintsState {
   showAll: boolean;
-  sortHolidaysBy: 'name' | 'date';
+  sortHolidaysBy: string;
   holidaysLoaded: boolean;
 }
 
@@ -22,10 +21,10 @@ const myReducer = createReducer(
   on(sortFilterActions.sortHolidaysByName, (state) => ({ ...state, sortHolidaysBy: 'name' })),
   on(fromHolidaysActions.loadHolidayData, (state) => ({ ...state, holidaysLoaded: false })),
   on(fromHolidaysActions.loadDataSucceeded, (state) => ({ ...state, holidaysLoaded: true }))
+
+
 );
 
-export function reducer(state: UiHintsState, action: Action): UiHintsState {
+export function reducer(state: any, action: any) {
   return myReducer(state, action);
 }
-
-

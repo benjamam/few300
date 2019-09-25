@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as holidayActions from '../actions/holidays.actions';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { HolidayEntity } from '../reducers/holdays.reducer';
+import { HolidayEntity } from '../reducers/holidays.reducer';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -18,7 +18,7 @@ export class HolidaysEffects {
         this.client.post<HolidayEntity>(environment.holidayUrl, { name: originalEntity.name, date: originalEntity.date })
           .pipe(
             map(response => holidayActions.holidayAddedSuccess({ oldId: originalEntity.id, newEntity: response })),
-            catchError(err => of(holidayActions.holidayAddedFailure({ message: 'Could not add that', entity: originalEntity })))
+            catchError(err => of(holidayActions.holidayAddedFailure({ message: 'Could Not Add That', entity: originalEntity })))
           )
       ))
   );
@@ -38,5 +38,3 @@ export class HolidaysEffects {
 
   constructor(private actions$: Actions, private client: HttpClient) { }
 }
-
-

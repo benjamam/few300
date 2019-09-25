@@ -2,6 +2,7 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, Action, on } from '@ngrx/store';
 import * as actions from '../actions/holidays.actions';
 
+
 export interface HolidayEntity {
   id: string;
   name: string;
@@ -18,6 +19,7 @@ const { selectAll } = adapter.getSelectors();
 export const selectHolidayArray = selectAll;
 
 const initialState = adapter.getInitialState();
+
 
 
 const reducerFunction = createReducer(

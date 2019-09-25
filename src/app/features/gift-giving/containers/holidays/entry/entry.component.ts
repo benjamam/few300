@@ -18,7 +18,6 @@ export class EntryComponent implements OnInit {
   addItem(nameEl: HTMLInputElement, dateEl: HTMLInputElement) {
     const name = nameEl.value;
     const date = dateEl.valueAsDate.toISOString();
-
     // dispatch!
     this.store.dispatch(holidayAdded({ name, date }));
 
@@ -26,5 +25,4 @@ export class EntryComponent implements OnInit {
     dateEl.value = '';
     nameEl.focus();
   }
-
 }

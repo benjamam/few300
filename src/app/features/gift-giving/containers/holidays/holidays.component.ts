@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { GiftGivingState, selectHolidayListItems, selectHolidaysLoaded } from '../../reducers';
 import { Observable } from 'rxjs';
 import { HolidayListItem } from '../../models';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-holidays',
@@ -11,8 +11,8 @@ import { Store } from '@ngrx/store';
 })
 export class HolidaysComponent implements OnInit {
 
-  holidays$: Observable<HolidayListItem[]>;
   holidaysLoaded$: Observable<boolean>;
+  holidays$: Observable<HolidayListItem[]>;
 
   constructor(private store: Store<GiftGivingState>) { }
 

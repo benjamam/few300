@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { GiftGivingState, selectShowAllHolidays } from '../../../reducers';
+import { Store } from '@ngrx/store';
 import * as actions from '../../../actions/sort-filter.actions';
 import { Observable } from 'rxjs';
-
 @Component({
   selector: 'app-sort-filter',
   templateUrl: './sort-filter.component.html',
@@ -29,7 +28,6 @@ export class SortFilterComponent implements OnInit {
   sortByName() {
     this.store.dispatch(actions.sortHolidaysByName());
   }
-
   sortByDate() {
     this.store.dispatch(actions.sortHolidaysByDate());
   }

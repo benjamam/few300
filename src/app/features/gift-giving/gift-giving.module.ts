@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { GiftGivingComponent } from './gift-giving.component';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
-import { FriendsComponent } from './containers/friends/friends.component';
 import { HolidaysComponent } from './containers/holidays/holidays.component';
+import { FriendsComponent } from './containers/friends/friends.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers, featureName } from './reducers';
 import { ListComponent } from './containers/holidays/list/list.component';
@@ -15,7 +15,9 @@ import { AppEffects } from './effects/app.effects';
 import { SortFilterEffects } from './effects/sort-filter.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { HolidaysEffects } from './effects/holidays.effects';
-
+import { FriendEntryComponent } from './containers/friends/friend-entry/friend-entry.component';
+import { FriendListComponent } from './containers/friends/friend-list/friend-list.component';
+import { FriendEffects } from './effects/friends.effects';
 const routes: Routes = [
   {
     path: 'gifts',
@@ -43,16 +45,24 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    GiftGivingComponent, DashboardComponent,
-    FriendsComponent, HolidaysComponent,
-    ListComponent, EntryComponent,
-    SortFilterComponent
-  ],
+    GiftGivingComponent,
+    DashboardComponent,
+    HolidaysComponent,
+    FriendsComponent,
+    ListComponent,
+    EntryComponent,
+    SortFilterComponent,
+    FriendEntryComponent,
+    FriendListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature(featureName, reducers),
-    EffectsModule.forFeature([AppEffects, SortFilterEffects, HolidaysEffects]),
+    EffectsModule.forFeature([
+      AppEffects,
+      SortFilterEffects,
+      HolidaysEffects,
+      FriendEffects]),
     HttpClientModule
   ]
 })

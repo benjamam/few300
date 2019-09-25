@@ -3,12 +3,12 @@
        role="group"
        aria-label="Basic example">
     <button type="button"
+            [disabled]="(showAll$ | async) === true"
             (click)="viewAll()"
-            [disabled]="(showAll$ | async )"
             class="btn btn-secondary">View All</button>
     <button type="button"
+            [disabled]="(showAll$ | async) === false"
             (click)="showOnlyUpcoming()"
-            [disabled]="!(showAll$ | async)"
             class="btn btn-secondary">Only Upcoming</button>
   </div>
   <div class="btn-group mr-2"
@@ -19,6 +19,6 @@
             class="btn btn-secondary">Sort by Name</button>
     <button type="button"
             (click)="sortByDate()"
-            class="btn btn-secondary">Sort by Date</button>
+            class="btn btn-secondary">Sort By Date</button>
   </div>
 </div>
